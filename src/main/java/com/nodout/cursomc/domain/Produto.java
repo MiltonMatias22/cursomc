@@ -8,59 +8,50 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 /**
  * @author: Milton Matias
- * @crida: 15-02-2018
- * @modificada: 15-02-2018
- * @version: V1.0
+ * Create: 16-02-2018
+ * UpDate: 16-02-2018
  */
 
 @Entity
-public class Categoria implements Serializable{
-	
-	/**
-	 * @Serializable: Para o objeto ser gravado em arquivos
-	 * ou ser trafegado via internet.
-	 * @serialVersionUID = 1L: 1L = Primeira versão da classe Categoria.
-	 */
+public class Produto implements Serializable{
+
 	private static final long serialVersionUID = 1L;
 	
-	/**
-	 * Atributos básico da classe.
-	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;	
-	
+	private Integer id;
 	private String nome;
+	private Double preco;
 	
-	/** Relacionamento: Categorias (1, *)-----(0, *) Produto = N to N
-	 *  mappedBy: Mapeamento feito pela outra classe associada,
-	 *  Produto, em cima do atributo categorias
-	 */
-	@ManyToMany(mappedBy = "categorias") 
-	private List<Produto> produtos = new ArrayList<>();
+	/** Relacionamento: Categorias (1, *)-----(0, *) Produto */
+	@ManyToMany
+	@JoinTable(	
+			name = "PRODUTO_CATEGRIA", // Nova tabela N para N
+			joinColumns = @JoinColumn(name = "produto_id"), // Foreign key dessa tabela Produto
+			inverseJoinColumns = @JoinColumn(name = "categoria_id") // Foreign key da outra tabale Categoria
+			)
+	private List<Categoria> categorias = new ArrayList<>();
 	
-	/**
-	 * Construtor vazio
-	 */
-	public Categoria() {		
-	}
+	/** Contrutor padrão */
+	public Produto() {
 	
-	/**
-	 * @param id: Identificado único da classe.
-	 * @param nome: Descrição da categoria.
-	 */	
-	public Categoria(Integer id, String nome) {
+	}	
+	
+	/** Contrutor com parametros */
+	public Produto(Integer id, String nome, Double preco) {
 		this.id = id;
 		this.nome = nome;
+		this.preco = preco;
 	}
 	
-	
 	/** GETTERS AND SETTERS */
-
+	
 	public Integer getId() {
 		return id;
 	}
@@ -76,15 +67,23 @@ public class Categoria implements Serializable{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public List<Produto> getProdutos() {
-		return produtos;
+
+	public Double getPreco() {
+		return preco;
 	}
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	public void setPreco(Double preco) {
+		this.preco = preco;
 	}
-			
+
+	public List<Categoria> getCategorias() {
+		return categorias;
+	}
+
+	public void setCategorias(List<Categoria> categorias) {
+		this.categorias = categorias;
+	}
+	
 	/** HASHCODE AND EQUALS: para comparar objetos!*/
 
 	@Override
@@ -93,8 +92,8 @@ public class Categoria implements Serializable{
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
-	}	
-	
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -103,7 +102,7 @@ public class Categoria implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Produto other = (Produto) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -111,6 +110,6 @@ public class Categoria implements Serializable{
 			return false;
 		return true;
 	}
+		
 
-	
 }
