@@ -36,7 +36,7 @@ public class ResourceExceptionHandler {
 		/**@param status, @param mensagem e @Param tempo */
 		StandardError error = new StandardError(HttpStatus.NOT_FOUND.value(),
 				e.getMessage(), System.currentTimeMillis());
-		
+		//Aqui pode ser enviado uma página de erro?
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 

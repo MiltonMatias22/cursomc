@@ -42,16 +42,15 @@ public class Categoria implements Serializable{
 	 *  mappedBy: Mapeamento feito pela outra classe associada,
 	 *  Produto, em cima do atributo categorias.
 	 *  @JsonManagedReference: Fazer do lado que vc quer que venha os
-	 *  objetos associados. Ex: Ao buscar uma categoria, tb buscar os prduutos
-	 *  relacionados a ela. E @JsonBackReference do outro lado da associação
+	 *  objetos associados. Ex: Buscar uma categoria e todo os seus produtos.
+	 *  E @JsonBackReference do outro lado da associação para evitar o loop de buscas.
+	 *  já que um produto pode ter varias categorias.
 	 */
 	@JsonManagedReference
 	@ManyToMany(mappedBy = "categorias") 
 	private List<Produto> produtos = new ArrayList<>();
 	
-	/**
-	 * Construtor vazio
-	 */
+	/** Construtor vazio */
 	public Categoria() {		
 	}
 	
