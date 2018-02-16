@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  * @author: Milton Matias
  * Create: 16-02-2018
@@ -29,7 +31,12 @@ public class Produto implements Serializable{
 	private String nome;
 	private Double preco;
 	
-	/** Relacionamento: Categorias (1, *)-----(0, *) Produto */
+	/** Relacionamento: Categorias (1, *)-----(0, *) Produto
+	 *  @JsonBackReference: Do outro lado da associação os obejtos produtos já foram buscados,
+	 *  com isso impedindo que aja novas bucas ocasionando a referencia cíclica (loop de buscas).
+	 *  omitindo a lista de categorias para cada produto.
+	 * */
+	@JsonBackReference
 	@ManyToMany
 	@JoinTable(	
 			name = "PRODUTO_CATEGRIA", // Nova tabela N para N

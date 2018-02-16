@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.nodout.cursomc.domain.Categoria;
 import com.nodout.cursomc.repositoreis.CategoriaRepository;
+import com.nodout.cursomc.services.exceptions.ObjectNotFoundException;
 
 /**
  * @author: Milton Matias
@@ -25,8 +26,16 @@ public class CategoriaService {
 	 * @return categoria  
 	 */
 	public Categoria buscar(Integer id) {
-				
-		return 	repo.findOne(id);	
+		
+		Categoria categoria =  repo.findOne(id);
+		
+		if(categoria == null) {
+			// A camada de serviço recebe a exceção!
+			throw new ObjectNotFoundException("Objeto não encontrado Id: "+ id
+					+" Tipo: "+ Categoria.class.getName()); 
+		}
+		
+		return 	categoria;
 	}
 	
 }
