@@ -2,6 +2,11 @@ package com.nodout.cursomc.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * @author: Milton Matias
  * @crida: 15-02-2018
@@ -9,6 +14,7 @@ import java.io.Serializable;
  * @version: V1.0
  */
 
+@Entity
 public class Categoria implements Serializable{
 	
 	/**
@@ -21,6 +27,8 @@ public class Categoria implements Serializable{
 	/**
 	 * Atributos básico da classe.
 	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;	
 	
 	private String nome;
@@ -28,8 +36,7 @@ public class Categoria implements Serializable{
 	/**
 	 * Construtor vazio
 	 */
-	public Categoria() {
-		
+	public Categoria() {		
 	}
 	
 	/**

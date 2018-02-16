@@ -9,6 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nodout.cursomc.domain.Categoria;
 
+/**
+ * @author: Milton Matias
+ * @crida: 15-02-2018
+ * @modificada: 15-02-2018
+ * @version: V1.0
+ */
+
 @RestController
 @RequestMapping(value = "/categorias")
 public class CategoriaResource {
