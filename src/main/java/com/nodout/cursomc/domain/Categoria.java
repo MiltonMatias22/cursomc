@@ -63,7 +63,6 @@ public class Categoria implements Serializable{
 		this.nome = nome;
 	}
 	
-	
 	/** GETTERS AND SETTERS */
 
 	public Integer getId() {
