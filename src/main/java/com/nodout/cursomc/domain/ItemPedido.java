@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author: Milton Matias
  * Create: 17-02-2018
@@ -18,7 +20,9 @@ public class ItemPedido implements Serializable{
 	
 	/** Classe auxiliar, representa chave composta Pedido e Produto
 	 * @EmbadedId: identificador embutido em um tipo auxiliar.
+	 * @JsonIgnore: Não será Serializado
 	 * */
+	@JsonIgnore 
 	@EmbeddedId
 	private ItemPedidoPK id = new ItemPedidoPK();
 	
@@ -41,6 +45,7 @@ public class ItemPedido implements Serializable{
 	}
 	
 	/** --- Para ter acesso direto ao Pedido e Produto fora da classe ItemPedido --- */
+	@JsonIgnore // Ignorar Serialização
 	public Pedido getPedido() {
 		return this.id.getPedido();
 	}

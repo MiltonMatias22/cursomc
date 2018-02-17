@@ -15,7 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * @author: Milton Matias
@@ -30,15 +31,25 @@ public class Pedido implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private Integer id;
+	
+	@JsonFormat(pattern = "dd/MM/yyyy hh:mm")
 	private Date instante;
 	
 	/** CascadeType.ALL: necessário para evitar erro de entidade transiente
 	 *  quando for salvar o pedido e pagamento.
 	 * */
+	@JsonManagedReference
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
 	private Pagamento pagamento;
 	
-	@JsonBackReference
+	/** endpont de Pedidos:
+	 * @JsonManagedReference: permite que um Cliente de um pedido seja
+	 * Serializado, mas ñ o contrário, evitando referência cíclica (loop). uma vez
+	 * que para mostrar um Cliente deve ser feito uma busca pelos seus pedidos,
+	 * e para mostrar os pedidos deve tb ser feito uma busca pelos clientes
+	 * associados aos mesmos (loop). 
+	 *  */
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
@@ -52,6 +63,7 @@ public class Pedido implements Serializable{
 	 * mappedBy: "id.pedido": mapeado pelo atributo (ItemPedidoPK id) na
 	 * classe ItemPedido que tem a referência para o pedido.
 	 * */
+	@JsonManagedReference
 	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemPedido> itemPedidos = new HashSet<>();
 	

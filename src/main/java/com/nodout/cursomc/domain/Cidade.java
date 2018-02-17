@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * @author: Milton Matias
@@ -28,7 +28,7 @@ public class Cidade implements Serializable{
 	private String nome;
 	
 	/** Muitas cidades para um estado N - 1*/
-	@JsonManagedReference
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "estado_id") // chave estrangeira na tabela cidade
 	private Estado estado;

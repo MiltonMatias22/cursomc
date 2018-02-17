@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author: Milton Matias
@@ -52,6 +53,7 @@ public class Produto implements Serializable{
 	 * mappedBy: "id.produto": mapeado pelo atributo (ItemPedidoPK id) na
 	 * classe ItemPedido que tem a referência para o Produto.
 	 * */
+	@JsonIgnore // Ignorar Serialização da lista item
 	@OneToMany(mappedBy = "id.produto")
 	private Set<ItemPedido> itemPedidos = new HashSet<>();
 	
@@ -72,6 +74,7 @@ public class Produto implements Serializable{
 	 * no qual o produto está associado.
 	 * @return pedidos:
 	 * */
+	@JsonIgnore // Ignorar Serialização da lista de pedis
 	public List<Pedido> getPedidos(){
 		
 		List<Pedido> pedidos = new ArrayList<>();
