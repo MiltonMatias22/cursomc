@@ -13,6 +13,7 @@ import com.nodout.cursomc.domain.Cidade;
 import com.nodout.cursomc.domain.Cliente;
 import com.nodout.cursomc.domain.Endereco;
 import com.nodout.cursomc.domain.Estado;
+import com.nodout.cursomc.domain.ItemPedido;
 import com.nodout.cursomc.domain.Pagamento;
 import com.nodout.cursomc.domain.PagamentoComBoleto;
 import com.nodout.cursomc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.nodout.cursomc.repositoreis.CidadeRepository;
 import com.nodout.cursomc.repositoreis.ClienteRepository;
 import com.nodout.cursomc.repositoreis.EnderecoRepository;
 import com.nodout.cursomc.repositoreis.EstadoRepository;
+import com.nodout.cursomc.repositoreis.ItemPedidoRepository;
 import com.nodout.cursomc.repositoreis.PagamentoRepository;
 import com.nodout.cursomc.repositoreis.PedidoRepository;
 import com.nodout.cursomc.repositoreis.ProdutoRepository;
@@ -56,6 +58,9 @@ public class CursomcApplication implements CommandLineRunner{
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -132,7 +137,7 @@ public class CursomcApplication implements CommandLineRunner{
 		
 		enderecoRepository.save(Arrays.asList(endereco1, endereco2));
 		
-		/** */
+		/** Pedidos e Pagament*/
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 		
 		Pedido pedido1 = new Pedido(null, format.parse("30/09/2017 10:32"), cliente1, endereco1);
@@ -154,7 +159,22 @@ public class CursomcApplication implements CommandLineRunner{
 		/** SALVANDO */
 		pedidoRepository.save(Arrays.asList(pedido1, pedido2));
 		
-		pagamentoRepository.save(Arrays.asList(pagamento1, pagamento2));		
+		pagamentoRepository.save(Arrays.asList(pagamento1, pagamento2));
+		
+		/** ItemPedido */
+		
+		ItemPedido itemPedido1 = new ItemPedido(pedido1, produto1, 0.00, 1, 2000.00);
+		ItemPedido itemPedido2 = new ItemPedido(pedido1, produto3, 0.00, 2, 80.00);
+		ItemPedido itemPedido3 = new ItemPedido(pedido2, produto2, 100.00, 1, 800.00);
+		
+		pedido1.getItemPedidos().addAll(Arrays.asList(itemPedido1, itemPedido2));
+		pedido2.getItemPedidos().addAll(Arrays.asList(itemPedido3));
+		
+		produto1.getItemPedidos().addAll(Arrays.asList(itemPedido1));
+		produto2.getItemPedidos().addAll(Arrays.asList(itemPedido3));
+		produto3.getItemPedidos().addAll(Arrays.asList(itemPedido2));
+		
+		itemPedidoRepository.save(Arrays.asList(itemPedido1, itemPedido2, itemPedido3));
 	}
 	
 }

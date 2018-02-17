@@ -2,7 +2,9 @@ package com.nodout.cursomc.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -45,6 +48,13 @@ public class Produto implements Serializable{
 			)
 	private List<Categoria> categorias = new ArrayList<>();
 	
+	/** Um Produto conhece is itemPedidos a qual está associado 
+	 * mappedBy: "id.produto": mapeado pelo atributo (ItemPedidoPK id) na
+	 * classe ItemPedido que tem a referência para o Produto.
+	 * */
+	@OneToMany(mappedBy = "id.produto")
+	private Set<ItemPedido> itemPedidos = new HashSet<>();
+	
 	/** Contrutor padrão */
 	public Produto() {
 	
@@ -55,6 +65,25 @@ public class Produto implements Serializable{
 		this.id = id;
 		this.nome = nome;
 		this.preco = preco;
+	}
+	
+	/**
+	 * Function:  Varre uma lista  Set<ItemPedido> e Monta uma lista de pedidos
+	 * no qual o produto está associado.
+	 * @return pedidos:
+	 * */
+	public List<Pedido> getPedidos(){
+		
+		List<Pedido> pedidos = new ArrayList<>();
+		
+		/** Para cada itemPedido do conjubto Set<itemPediddos>...*/
+		for(ItemPedido itemPedido : this.itemPedidos)	{
+			/** add a lista de pedidos o pedido*/
+			pedidos.add(itemPedido.getPedido());
+			
+		}
+		
+		return pedidos;
 	}
 	
 	/** GETTERS AND SETTERS */
@@ -90,6 +119,15 @@ public class Produto implements Serializable{
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
 	}
+	
+	public Set<ItemPedido> getItemPedidos() {
+		return itemPedidos;
+	}
+
+	public void setItemPedidos(Set<ItemPedido> itemPedidos) {
+		this.itemPedidos = itemPedidos;
+	}
+
 	
 	/** HASHCODE AND EQUALS: para comparar objetos!*/
 
