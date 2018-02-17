@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  * @author: Milton Matias
  * Create: 16-02-2018
@@ -28,7 +30,12 @@ public class Endereco implements Serializable{
 	private String bairro;
 	private String cep;
 	
-	/** 1 ou N endereços pertencem a um único cliente N - 1*/
+	/** 1 ou N endereços pertencem a um único cliente N - 1
+	 *  @JsonBackReference // Gerencia Referência cíclica:
+	 *  Endereco não pode Serializar a endidade Cliente.	 *  
+	 *  Não ocorre em relacionamento direcionado. Ex: Endereco --> Cidade
+	 * */
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "cliente_id") // Chave estrangeira na tabela endereço
 	private Cliente cliente;

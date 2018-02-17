@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nodout.cursomc.domain.enums.TipoCliente;
 
 /**
@@ -34,7 +35,11 @@ public class Cliente implements Serializable{
 	private String cpfCnpj;
 	private Integer tipoCliente;
 	
-	/** Um cliente possui muitos endereços 1 - N*/
+	/** Um cliente possui muitos endereços 1 - N
+	 *  @JsonManagedReference Gerencia Referência cíclica:
+	 *  O cliente pode Serializar os endereçõs dele mais ñ o contrário
+	 * */	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente") // mapeado pelo atributo cliente na classe Endereco
 	private List<Endereco> enderecos = new ArrayList<>();
 	
